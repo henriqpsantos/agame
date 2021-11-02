@@ -1,3 +1,7 @@
+# Builders
+justfile
+makefile
+
 # Prerequisites
 *.d
 
@@ -30,3 +34,8 @@
 *.exe
 *.out
 *.app
+
+
+# Custom folders
+ext/
+tmp/
