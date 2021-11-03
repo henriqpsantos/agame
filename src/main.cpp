@@ -5,7 +5,7 @@
 int main()
 {
     // create the window
-    sf::RenderWindow window(sf::VideoMode(1400, 800), "Cancer Abyss");
+    sf::RenderWindow window(sf::VideoMode(1400, 800), "Neon Piss");
 
     //window.setFramerateLimit(60);
 
@@ -21,32 +21,29 @@ int main()
     circle.setOutlineThickness(5);
     circle.setPosition(x1, y1);
 
+	float deltaTime = 0.0f;
+
+	sf::Clock clock;
     bool quit = false;
 
-    float deltaTime = 0.0f;
     const float timestep = 1.0f/144.0f; //up to 144Hz
-    sf::Clock clock;
-
 
     // Loop to keep window updating
     while (window.isOpen())
     {
+			
+        deltaTime += clock.restart().asSeconds();
 
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
         {
-            // "close requested" event: we close the window
-            if ((event.type == sf::Event::Closed) || (quit == true))
-                window.close();
+			if (event.type == sf::Event::Closed) quit = true;
         }
-
-        deltaTime += clock.restart().asSeconds();
 
         while(deltaTime >= timestep)
         {
             deltaTime -= timestep;
-
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
                 circle.move(15, 0);
@@ -68,11 +65,12 @@ int main()
             }
 
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-                quit = true;
+				quit = true;
             }
         }
+		if (quit) window.close();
 
-            // clear the window
+		// clear the window
         window.clear();
 
         window.draw(circle);

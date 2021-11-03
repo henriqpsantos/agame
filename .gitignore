@@ -36,7 +36,9 @@ makefile
 *.out
 *.app
 
-
 # Custom folders
+# Static lib folder
 ext/
+# dll folder
+lib/
 tmp/
