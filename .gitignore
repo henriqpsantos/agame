@@ -1,5 +1,6 @@
 # Builders
 justfile
+.justfile
 makefile
 
 # Prerequisites
