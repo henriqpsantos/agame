@@ -2,9 +2,6 @@
 #include <SFML/System.hpp>
 #include "loop.h"
 
-
-// EVENTUALLY DO (DIR & ENUM) == DIR to determine it
-
 bool handleLoop()
 {
 	return false;
@@ -13,6 +10,7 @@ bool handleLoop()
 int handleEvents(void)
 {
 	int dir = 0x0000;
+	// FIXME:(h) REFACTOR THIS EVENTUALLY
 	bool W = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool A = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
 	bool S = sf::Keyboard::isKeyPressed(sf::Keyboard::S);

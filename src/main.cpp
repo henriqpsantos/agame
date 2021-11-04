@@ -67,7 +67,7 @@ int main()
 				xacc = xacc * squirt;
 				yacc = yacc * squirt;
 			}
-
+			// NOTE(h): Aqui podemos ter um dt = deltatime?
             // movement equations (time excluded for simplicity)
             xvel = xvel + xacc + xvel*drag;
             yvel = yvel + yacc + yvel*drag;
