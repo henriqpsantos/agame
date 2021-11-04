@@ -1,7 +1,12 @@
+#include <iostream>
+#include <math.h>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+
 #include "loop.h"
+#include "physics.h"
 
 enum DIRECTION {
 		UP=0x0001,
@@ -17,6 +22,13 @@ int main()
     // window.setFramerateLimit(60);
     int x1 = 100;
     int y1 = 100;
+
+    int dxpos = 0;
+    int dypos = 0;
+    float xvel = .0f;
+    float yvel = .0f;
+    float xacc = .0f;
+    float yacc = .0f;
 
     sf::CircleShape circle;
     circle.setFillColor(sf::Color::White);
@@ -50,10 +62,24 @@ int main()
         {
             deltaTime -= timestep;
 			dir = handleEvents();
-			if ((dir & UP) == UP) circle.move(0,-15);
-			if ((dir & DOWN) == DOWN) circle.move(0,15);
-			if ((dir & LEFT) == LEFT) circle.move(-15,0);
-			if ((dir & RIGHT) == RIGHT) circle.move(15,0);
+			if ((dir & UP) == UP) yacc = -baseacc;
+			if ((dir & DOWN) == DOWN) yacc = baseacc;
+			if ((dir & LEFT) == LEFT) xacc = -baseacc;
+			if ((dir & RIGHT) == RIGHT) xacc = baseacc;
+
+            // movement equations (time excluded for simplicity)
+            xvel = xvel + xacc + xvel*drag;
+            yvel = yvel + yacc + yvel*drag;
+            dxpos = std::round(xvel + 0.5f*xacc);
+            dypos = std::round(yvel + 0.5f*yacc);
+            std::cout << xvel << " " << yvel << "\n";
+
+            // move
+            circle.move(dxpos, dypos);
+
+            // reset
+            yacc = .0f;
+            xacc = .0f;
         }
 
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
