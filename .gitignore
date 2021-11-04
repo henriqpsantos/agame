@@ -1,3 +1,8 @@
+# Hidden files not uploaded
+.*
+# ... except for gitignore lol
+!/.gitignore
+
 # Builders
 justfile
 .justfile
@@ -42,7 +47,3 @@ ext/
 # dll folder
 lib/
 tmp/
-
-# IDE
-.vscode
-.idea
