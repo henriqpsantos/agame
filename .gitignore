@@ -42,3 +42,7 @@ ext/
 # dll folder
 lib/
 tmp/
+
+# IDE
+.vscode
+.idea
