@@ -1,6 +1,5 @@
-#ifndef LOOP_H_
-#define LOOP_H_
+#pragma once
 
 bool handleLoop();
+int handleEvents(void);
 
-#endif

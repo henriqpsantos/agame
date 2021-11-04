@@ -1,16 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
+#include "loop.h"
 
+enum DIRECTION {
+		UP=0x0001,
+		DOWN=0x0002,
+		LEFT=0x0004,
+		RIGHT=0x0008
+};
 int main()
 {
-    // create the window
+    // object creation
     sf::RenderWindow window(sf::VideoMode(1400, 800), "Neon Piss");
 
-    //window.setFramerateLimit(60);
-
-    //object creation
-
+    // window.setFramerateLimit(60);
     int x1 = 100;
     int y1 = 100;
 
@@ -41,33 +45,20 @@ int main()
 			if (event.type == sf::Event::Closed) quit = true;
         }
 
+		int dir;
         while(deltaTime >= timestep)
         {
             deltaTime -= timestep;
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            {
-                circle.move(15, 0);
-            }
-
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            {
-                circle.move(-15, 0);
-            }
-
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            {
-                circle.move(0, -15);
-            }
-
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            {
-                circle.move(0, 15);
-            }
-
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-				quit = true;
-            }
+			dir = handleEvents();
+			if ((dir & UP) == UP) circle.move(0,-15);
+			if ((dir & DOWN) == DOWN) circle.move(0,15);
+			if ((dir & LEFT) == LEFT) circle.move(-15,0);
+			if ((dir & RIGHT) == RIGHT) circle.move(15,0);
         }
+
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+			quit = true;
+		}
 		if (quit) window.close();
 
 		// clear the window
@@ -79,6 +70,5 @@ int main()
         window.display();
 
     }
-
     return 0;
 }
