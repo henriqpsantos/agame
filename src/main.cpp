@@ -26,10 +26,10 @@ int main()
     float yacc = .0f;
 
     sf::CircleShape circle;
-    circle.setFillColor(sf::Color::White);
+    circle.setFillColor(sf::Color::Blue);
     circle.setRadius(15);
-    circle.setOutlineColor(sf::Color::Blue);
-    circle.setOutlineThickness(5);
+    circle.setOutlineColor(sf::Color::White);
+    circle.setOutlineThickness(2);
     circle.setPosition(x1, y1);
 
 	float deltaTime = 0.0f;
