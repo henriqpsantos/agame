@@ -8,12 +8,6 @@
 #include "loop.h"
 #include "physics.h"
 
-enum DIRECTION {
-		UP=0x0001,
-		DOWN=0x0002,
-		LEFT=0x0004,
-		RIGHT=0x0008
-};
 int main()
 {
     // object creation
@@ -25,6 +19,7 @@ int main()
 
     int dxpos = 0;
     int dypos = 0;
+	const float squirt = 1.0f/1.41421356f;
     float xvel = .0f;
     float yvel = .0f;
     float xacc = .0f;
@@ -62,19 +57,28 @@ int main()
         {
             deltaTime -= timestep;
 			dir = handleEvents();
-			if ((dir & UP) == UP) yacc = -baseacc;
-			if ((dir & DOWN) == DOWN) yacc = baseacc;
-			if ((dir & LEFT) == LEFT) xacc = -baseacc;
-			if ((dir & RIGHT) == RIGHT) xacc = baseacc;
+			if (dir & UP)	 yacc -= baseacc;
+			if (dir & DOWN)	 yacc += baseacc;
+			if (dir & LEFT)	 xacc -= baseacc;
+			if (dir & RIGHT) xacc += baseacc;
+
+			// Acceleration is consistent in diagonals
+			if (((dir & UP) || (dir & DOWN)) && ((dir & LEFT) || (dir & RIGHT))) {
+				xacc = xacc * squirt;
+				yacc = yacc * squirt;
+			}
 
             // movement equations (time excluded for simplicity)
             xvel = xvel + xacc + xvel*drag;
             yvel = yvel + yacc + yvel*drag;
             dxpos = std::round(xvel + 0.5f*xacc);
             dypos = std::round(yvel + 0.5f*yacc);
+
+
+			/* std::cout << K << "\n"; */
             std::cout << xvel << " " << yvel << "\n";
 
-            // move
+            // one move <3
             circle.move(dxpos, dypos);
 
             // reset

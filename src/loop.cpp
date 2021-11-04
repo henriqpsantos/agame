@@ -1,14 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include "loop.h"
 
 
 // EVENTUALLY DO (DIR & ENUM) == DIR to determine it
-enum DIRECTION {
-		UP=0x0001,
-		DOWN=0x0002,
-		LEFT=0x0004,
-		RIGHT=0x0008
-};
 
 bool handleLoop()
 {
@@ -18,24 +13,21 @@ bool handleLoop()
 int handleEvents(void)
 {
 	int dir = 0x0000;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		dir |= RIGHT;
-	}
+	bool W = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+	bool A = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+	bool S = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+	bool D = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if (W ^ S)
 	{
-		dir |= LEFT;
+		if (S) dir |= DOWN;
+		if (W) dir |= UP;
 	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (D ^ A)
 	{
-		dir |= UP;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		dir |= DOWN;
+		if (D) dir |= RIGHT;
+		if (A) dir |= LEFT;
 	}
 	return dir;
 }
+
