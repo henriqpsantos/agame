@@ -32,6 +32,13 @@ int main()
     circle.setOutlineThickness(2);
     circle.setPosition(x1, y1);
 
+    
+    sf::RectangleShape platform;
+    platform.setSize(sf::Vector2f(1000, 50));
+    platform.setOutlineColor(sf::Color::Red);
+    platform.setOutlineThickness(5);
+    platform.setPosition(10, 600);
+
 	float deltaTime = 0.0f;
 
 	sf::Clock clock;
@@ -57,26 +64,33 @@ int main()
         {
             deltaTime -= timestep;
 			dir = handleEvents();
-			if (dir & UP)	 yacc -= baseacc;
+			if (dir & UP)	 yacc -= baseacc + gravity;
 			if (dir & DOWN)	 yacc += baseacc;
 			if (dir & LEFT)	 xacc -= baseacc;
 			if (dir & RIGHT) xacc += baseacc;
 
 			// Acceleration is consistent in diagonals
-			if (((dir & UP) || (dir & DOWN)) && ((dir & LEFT) || (dir & RIGHT))) {
+			if (((dir & UP) || (dir & DOWN)) && ((dir & LEFT) || (dir & RIGHT))) 
+            {
 				xacc = xacc * squirt;
 				yacc = yacc * squirt;
 			}
 			// NOTE(h): Aqui podemos ter um dt = deltatime?
             // movement equations (time excluded for simplicity)
             xvel = xvel + xacc + xvel*drag;
-            yvel = yvel + yacc + yvel*drag;
+            yvel = yvel + (yacc + gravity) + yvel*drag;
             dxpos = std::round(xvel + 0.5f*xacc);
             dypos = std::round(yvel + 0.5f*yacc);
 
 
 			/* std::cout << K << "\n"; */
             std::cout << xvel << " " << yvel << "\n";
+
+            // this is just to test gravity
+            if (circle.getGlobalBounds().intersects(platform.getGlobalBounds()) && dypos > 0)
+            {
+                dypos = 0;
+            }
 
             // one move <3
             circle.move(dxpos, dypos);
@@ -86,7 +100,8 @@ int main()
             xacc = .0f;
         }
 
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
 			quit = true;
 		}
 		if (quit) window.close();
@@ -94,7 +109,9 @@ int main()
 		// clear the window
         window.clear();
 
+        // NOTE(l): criar linked list para drawables e iterar?
         window.draw(circle);
+        window.draw(platform);
 
         //end the current frame
         window.display();
