@@ -6,6 +6,5 @@ enum DIRECTION {
 		LEFT=0x0004,
 		RIGHT=0x0008
 };
-bool handleLoop();
 int handleEvents(void);
 
