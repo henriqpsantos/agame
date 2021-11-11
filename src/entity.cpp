@@ -1,4 +1,18 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
+#include "entity.h"
 
-// TODO(h): Implement linked list here
+Entity::Entity (sf::Shape * shape)
+{
+	this->shape = shape;
+}
+
+void Entity::move(int dx, int dy)
+{
+	this->shape->move(dx, dy);
+}
+
+sf::Shape * Entity::getShape()
+{
+	return this->shape;
+}
+

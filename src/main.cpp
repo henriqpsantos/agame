@@ -25,25 +25,30 @@ int main()
     float yacc = .0f;
 
 	// CLEANUP(h): Move this to a setupEntities function to load player and enemy data
-    sf::CircleShape enemy;
-    enemy.setFillColor(sf::Color::Red);
-    enemy.setRadius(5);
-    enemy.setOutlineColor(sf::Color::White);
-    enemy.setOutlineThickness(1);
-    enemy.setPosition(700,400);
+    sf::CircleShape enem;
+    enem.setFillColor(sf::Color::Red);
+    enem.setRadius(5);
+    enem.setOutlineColor(sf::Color::White);
+    enem.setOutlineThickness(1);
+    enem.setPosition(700,400);
 
-    sf::CircleShape player;
-    player.setFillColor(sf::Color::Blue);
-    player.setRadius(15);
-    player.setOutlineColor(sf::Color::White);
-    player.setOutlineThickness(2);
-    player.setPosition(100,100);
+    sf::CircleShape play;
+    play.setFillColor(sf::Color::Blue);
+    play.setRadius(15);
+    play.setOutlineColor(sf::Color::White);
+    play.setOutlineThickness(2);
+    play.setPosition(100,100);
 
-    sf::RectangleShape platform;
-    platform.setSize(sf::Vector2f(1000, 50));
-    platform.setOutlineColor(sf::Color::Red);
-    platform.setOutlineThickness(5);
-    platform.setPosition(10, 600);
+    sf::RectangleShape plat;
+    plat.setSize(sf::Vector2f(1000, 50));
+    plat.setOutlineColor(sf::Color::Red);
+    plat.setOutlineThickness(5);
+    plat.setPosition(10, 600);
+
+	// Sprites instead of shapes?
+	Entity enemy(&enem);
+	Entity player(&play);
+	Entity platform(&plat);
 
 	float deltaTime = 0.0f;
 
@@ -65,7 +70,7 @@ int main()
 			if (event.type == sf::Event::Closed) quit = true;
         }
 
-		int dir;
+		unsigned int dir;
         while(deltaTime >= timestep)
         {
             deltaTime -= timestep;
@@ -76,12 +81,15 @@ int main()
 			if (dir & LEFT)	 xacc -= baseacc;
 			else if (dir & RIGHT) xacc += baseacc;
 
-			// Acceleration is consistent in diagonals
-			if (((dir & UP) || (dir & DOWN)) && ((dir & LEFT) || (dir & RIGHT))) 
+			// FIXME(h): Does this work?
+			// Exactly 2 directions are pressed
+			if (__builtin_popcount(dir) > 1)
             {
 				xacc = xacc * squirt;
 				yacc = yacc * squirt;
+				std::cout << __builtin_popcount(dir) << "\n";
 			}
+
 			// NOTE(h): Aqui podemos ter um dt = deltatime?
             // movement equations (time excluded for simplicity)
             xvel = xvel + xacc + xvel*drag;
@@ -91,14 +99,15 @@ int main()
 
             std::cout << xvel << " " << yvel << "\n";
 
-            // this is just to test gravity
-            if (player.getGlobalBounds().intersects(platform.getGlobalBounds()) && dypos > 0)
+			// FIXME(h): I broke this :(
+            if (false) // player.getGlobalBounds().intersects(platform.getGlobalBounds()) && dypos > 0)
             {
                 dypos = 0;
             }
 
 
-            if (player.getGlobalBounds().intersects(enemy.getGlobalBounds()))
+			// FIXME(h): I broke this :(
+            if ( false) //player.getGlobalBounds().intersects(enemy.getGlobalBounds()))
             {
 				// NOTE: AUTOQUIT :)
                 quit = true;
@@ -109,7 +118,7 @@ int main()
             // reset
             yacc = .0f;
             xacc = .0f;
-        }
+        } // Physics code
 
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
@@ -118,14 +127,14 @@ int main()
 
 		if (quit) window.close();
 
-
+		// NOTE(h): RENDERING BEGINS
         window.clear();
         // NOTE(l): criar linked list para drawables e iterar?
 		// FIXME(h): Entity linked list ^ to draw
 
-        window.draw(enemy);
-        window.draw(player);
-        window.draw(platform);
+		window.draw(*player.getShape());
+		window.draw(*enemy.getShape());
+		window.draw(*platform.getShape());
 
         //end the current frame
         window.display();

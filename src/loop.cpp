@@ -4,7 +4,7 @@
 
 int handleEvents(void)
 {
-	int dir = 0x0000;
+	unsigned int dir = 0x0000;
 	// Poll keys first
 	bool W = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool A = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
