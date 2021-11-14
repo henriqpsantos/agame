@@ -90,8 +90,7 @@ int main()
 				std::cout << __builtin_popcount(dir) << "\n";
 			}
 
-			// NOTE(h): Aqui podemos ter um dt = deltatime?
-            // movement equations (time excluded for simplicity)
+			// NOTE(h): Aqui podemos ter um dt = deltatime? (NOTE(l): sim)
             xvel = xvel + xacc + xvel*drag;
             yvel = yvel + (yacc + gravity) + yvel*drag;
             dxpos = std::round(xvel + 0.5f*xacc);
